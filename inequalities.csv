@@ -1,0 +1,11 @@
+Type,Objectives,Solutions,Methods
+Linear Inequality,"Solve the inequality, Graph the solution, Interpret open/closed intervals, Model scenarios","One solution, Infinite solutions, No solution, Semi-infinite intervals","Inverse operations (with direction check), Graphing, Open/closed dot plotting, Technology"
+Quadratic Inequality,"Solve inequality, Graph parabola, Identify intervals, Verify solution","Interval solution sets, No solution, Open/closed endpoints","Factoring, Graphing, Sign chart, Test points, Technology"
+Polynomial Inequality (Degree ≥ 3),"Determine sign changes, Identify intervals, Graph behavior, Verify","Interval solution sets, No solution","Sign chart, Test points, Graphing, Structure analysis, Technology"
+Rational Inequality,"Solve inequality, Identify excluded values, Determine intervals","Interval sets, No solution, Excluded values","Multiply/divide by LCD, Sign chart, Test points, Domain restriction, Graphing, Technology"
+Radical Inequality,"Solve inequality, Check domain restrictions, Determine intervals, Verify","Interval solution sets, No solution, Extraneous solutions, Domain-limited solutions","Isolate radical, Square both sides, Check domain, Test points, Graphing, Technology"
+Exponential Inequality,"Isolate term, Apply log inverse, Solve inequality, Verify","Interval solution sets, No solution, Domain-limited intervals","Isolate exponential, Apply log inverse, Test points, Graphing, Technology"
+Logarithmic Inequality,"Apply properties, Solve, Check domain, Verify with intervals","Interval solution sets, No solution, Domain-restricted solutions","Log properties, Convert to exponential, Test points, Domain check, Graphing, Technology"
+Absolute Value Inequality,"Break into cases, Graph solution set, Solve compound inequality","Interval sets, Compound inequality, No solution","Absolute value properties, Case-based solving, Graphing, Technology"
+Piecewise-Defined Inequality,"Evaluate by rule, Graph per case, Verify across intervals","Piecewise solution sets, Conditional intervals","Evaluate by rule, Case-based solving, Graphing, Technology"
+System of Inequalities,"Graph regions, Determine overlap, Identify feasible region","Region of overlap, No solution","Graphing, Test points, Analyze overlap, Technology"
