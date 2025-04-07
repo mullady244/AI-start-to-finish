@@ -10,7 +10,9 @@ st.title("🔢 Linear Equation Learning Flow")
 st.header("1️⃣ Identify the Expression Type")
 st.markdown("**What kind of mathematical statement is this?**")
 
-question_1 = st.radio("`3x + 5 = 14` is a...", ["Expression", "Equation", "Inequality", "Function"])
+st.latex("3x + 5 = 14")
+
+question_1 = st.radio("This is a...", ["Expression", "Equation", "Inequality", "Function"])
 if question_1:
     if question_1 == "Equation":
         st.success("✅ Correct! It's an equation because it has an equals sign.")
@@ -20,64 +22,64 @@ if question_1:
 # Section 2: Choose Your Objective
 st.header("2️⃣ Choose Your Objective with This Linear Equation")
 objective = st.selectbox("Select what you'd like to do with it:", [
-    "Solve for x",
-    "Graph it",
-    "Find the y-intercept",
-    "Model a real-world situation"
+    "Understand how to solve for x (conceptually)",
+    "Understand how to graph it (conceptually)",
+    "Understand the y-intercept",
+    "Understand how it models a real-world situation"
 ])
 st.info(f"🔍 Selected Objective: {objective}")
 
 # Section 3: Solutions
 st.header("3️⃣ What Kind of Solution Can Linear Equations Have?")
-st.markdown("Linear equations have one of the following solution types:")
+st.markdown("Linear equations can result in the following:")
 
 st.markdown("- ✅ One real solution")
-st.markdown("- 🚫 No solution (if both sides are parallel but different)")
-st.markdown("- ♾️ Infinite solutions (if both sides are exactly the same)")
+st.markdown("- 🚫 No solution (parallel lines with different intercepts)")
+st.markdown("- ♾️ Infinite solutions (identical expressions on both sides)")
 
-solution_quiz = st.radio("What is the solution to `2x + 3 = 2x + 5`?", ["One solution", "No solution", "Infinite solutions"])
+st.latex("2x + 3 = 2x + 5")
+solution_quiz = st.radio("This equation has...", ["One solution", "No solution", "Infinite solutions"])
 if solution_quiz:
     if solution_quiz == "No solution":
-        st.success("✅ Correct. The variable terms cancel, and you're left with `3 = 5` which is false.")
+        st.success("✅ Correct. Simplifies to a false statement `3 = 5`, so no solution.")
     else:
-        st.error("❌ Incorrect. If the variable cancels and you're left with a false statement, there is **no solution**.")
+        st.error("❌ Incorrect. Try simplifying both sides. If the variable cancels and the result is false, there's **no solution**.")
 
-# Section 4: Methods
-st.header("4️⃣ Solving Methods for Linear Equations")
-with st.expander("🔧 View Solving Methods"):
-    st.markdown("- **Inverse Operations** (add/subtract, multiply/divide)")
-    st.markdown("- **Graphing**")
-    st.markdown("- **Technology tools** (calculators, algebra software)")
-    st.markdown("- **Verbal ↔ Symbolic modeling**")
+# Section 4: Methods (Conceptual)
+st.header("4️⃣ Conceptual Methods for Solving Linear Equations")
+with st.expander("🔧 View Conceptual Methods"):
+    st.markdown("- **Inverse Operations** (reverse the operations to isolate variable)")
+    st.markdown("- **Graphing** (intersecting line shows the solution visually)")
+    st.markdown("- **Technology Tools** (desmos, calculator, etc.)")
+    st.markdown("- **Verbal ↔ Symbolic Modeling** (translate real-world problems into equations)")
 
-# Section 5: Step-by-Step Problem
-st.header("5️⃣ Solve This: `3x - 5 = 10`")
-user_answer = st.text_input("What is the value of x?")
+# Section 5: Conceptual Walkthrough
+st.header("5️⃣ Conceptual Walkthrough Example")
 
-if user_answer:
-    try:
-        if float(user_answer) == 5:
-            st.success("🎉 Correct! `3x = 15` → `x = 5`")
-        else:
-            st.error("❌ Try again. Remember to add 5 to both sides, then divide by 3.")
-    except:
-        st.warning("⚠️ Please enter a number.")
+st.latex("3x - 5 = 10")
+st.markdown("**Step 1:** Add 5 to both sides to cancel the -5.")
+st.markdown("**Step 2:** Divide both sides by 3 to isolate x.")
+st.markdown("No need to solve it — just understand the inverse operations used to isolate the variable.")
 
 # Section 6: Common Mistake
 st.header("6️⃣ Common Mistake Insight")
-st.markdown("In the equation `2x + 3 = 2x + 5`, many mistakenly subtract `2x` and say the answer is `3 = 5`, which leads them to assume a solution exists. But `3 = 5` is false, so this equation has **no solution**.")
+st.markdown("In the equation:")
+st.latex("2x + 3 = 2x + 5")
+st.markdown("Many mistakenly cancel `2x` and think a solution exists.")
+st.markdown("However, you get `3 = 5` — which is false. So, this equation has **no solution**.")
 
-# Section 7: Glossary (Conceptual Terms)
+# Section 7: Glossary (Key Conceptual Terms)
 st.header("📘 Key Terms to Know")
 with st.expander("🧠 View Glossary"):
-    st.markdown("- **Equation**: A mathematical sentence that asserts two expressions are equal.")
-    st.markdown("- **Linear Equation**: An equation where the variable is to the first power and graphs as a straight line.")
-    st.markdown("- **Inverse Operation**: The opposite operation used to isolate the variable.")
-    st.markdown("- **Solution**: A value for the variable that makes the equation true.")
+    st.markdown("- **Equation**: A mathematical sentence asserting equality between two expressions.")
+    st.markdown("- **Linear Equation**: Variable is raised to the first power and graphs a straight line.")
+    st.markdown("- **Inverse Operation**: The opposite operation used to isolate a variable.")
+    st.markdown("- **Solution**: A value that makes the equation true.")
 
-# Section 8: Essay Reflection
-st.header("📝 Explain It Back")
-st.text_area("In your own words, explain how to solve a linear equation and what types of solutions are possible.")
+# Section 8: Explain It Back (locked for now)
+st.header("📝 Explain It Back (Final Phase)")
+st.markdown("🔒 Locked until you've completed True/False and Multiple Choice sections with 100% accuracy.")
+st.markdown("_This section is part of a multi-phase testing system designed to promote true conceptual mastery._")
 
 # Footer
 st.markdown("---")
