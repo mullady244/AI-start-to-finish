@@ -1,11 +1,12 @@
 
 import streamlit as st
+import datetime
 
 # Page configuration
-st.set_page_config(page_title="AI Start to Finish - Test II", layout="wide")
+st.set_page_config(page_title="AI Start to Finish - Test III", layout="wide")
 
 # Version control setup
-CURRENT_VERSION = "Test II"
+CURRENT_VERSION = "Test III"
 
 # Title with versioning
 st.title("📘 Algebra Map – Version: " + CURRENT_VERSION)
@@ -24,4 +25,4 @@ st.markdown("This is a conceptual exploration, not a solving practice space. Her
 st.info("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
 
 # Footer
-st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+st.caption("Last updated: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
