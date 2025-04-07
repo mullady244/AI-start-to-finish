@@ -2,10 +2,10 @@
 import streamlit as st
 
 # Page configuration
-st.set_page_config(page_title="AI Start to Finish - Test I", layout="wide")
+st.set_page_config(page_title="AI Start to Finish - Test II", layout="wide")
 
 # Version control setup
-CURRENT_VERSION = "Test I"
+CURRENT_VERSION = "Test II"
 
 # Title with versioning
 st.title("📘 Algebra Map – Version: " + CURRENT_VERSION)
@@ -13,7 +13,7 @@ st.title("📘 Algebra Map – Version: " + CURRENT_VERSION)
 # Notification for update (Option B)
 st.warning("🔄 A new version is available. Click below to refresh.")
 if st.button("Refresh Now"):
-    st.experimental_rerun()
+    st.rerun()
 
 # Sample content for linear equations (placeholder)
 st.header("🔢 Linear Equation Flow")
