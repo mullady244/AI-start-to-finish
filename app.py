@@ -1,70 +1,85 @@
 
 import streamlit as st
-import datetime
+import random
+from datetime import datetime
 
-# Page configuration
-st.set_page_config(page_title="AI Start to Finish - Test V", layout="wide")
+st.set_page_config(page_title="Algebra Map – Version: Test VI", layout="centered")
 
-# Version control
-CURRENT_VERSION = "Test V"
+# Header
+st.title("📘 Algebra Map – Version: Test VI")
 
-# Title
-st.title("📘 Algebra Map – Version: " + CURRENT_VERSION)
+# Auto-refresh notice (for visual confirmation)
+st.success("✅ You’re viewing the latest version – Test VI")
 
-# Smart refresh logic
-if "just_refreshed" not in st.session_state:
-    st.session_state["just_refreshed"] = False
+st.write("🔢 **Linear Equation Learning Flow**")
+st.markdown("*This is a conceptual exploration space. We teach how to solve, but you solve in your notebook.*")
+st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-if st.session_state["just_refreshed"]:
-    st.success("✅ You are now running the latest version!")
-    st.session_state["just_refreshed"] = False
-else:
-    st.warning("🔄 A new version is available. Click below to refresh.")
-    if st.button("Refresh Now"):
-        st.session_state["just_refreshed"] = True
-        st.rerun()
+# -----------------------
+# Step 1: Rotating T/F questions (from pool)
+# -----------------------
 
-# Section: Conceptual Flow for Linear Equations
-st.header("🔢 Linear Equation Flow")
+st.subheader("🔍 Step 1: Identify the Mathematical Statement Type")
 
-# Step 1: Identify the Type
-st.subheader("🔍 Step 1: Identify the Type of Mathematical Statement")
-st.latex("3x + 5 = 14")
-st.markdown("Is this a linear equation, inequality, or function?")
+tf_questions = [
+    ("3x + 5 = 14 is a linear equation.", True),
+    ("y = 2x² + 1 is a linear equation.", False),
+    ("x² = 9 is a linear equation.", False),
+    ("y = mx + b is the general form of a linear equation.", True),
+    ("A linear equation always has two variables.", False)
+]
 
-answer_type = st.radio(
-    "What type of mathematical statement is this?",
-    ["Linear Equation", "Linear Inequality", "Linear Function", "None of the above"],
-    key="step1"
-)
+selected_question = random.choice(tf_questions)
+question_text, correct_answer = selected_question
 
-if answer_type:
-    if answer_type == "Linear Equation":
-        st.success("✅ Correct! This is a linear equation. It has an equals sign and the variable is to the first power.")
+st.write("**Statement:** " + question_text)
+user_tf = st.radio("True or False?", ["True", "False"], key="tf_q")
+
+if st.button("Check Answer"):
+    if (user_tf == "True" and correct_answer) or (user_tf == "False" and not correct_answer):
+        st.success("✅ Correct!")
     else:
-        st.error("❌ Not quite. This is a **linear equation** due to the equals sign and linear degree of the variable.")
+        st.error("❌ Incorrect.")
+        st.markdown("**Explanation:** " + (
+            "This is correct because it matches the definition of a linear equation."
+            if correct_answer else
+            "This is incorrect because it's not in the form of a linear equation (e.g., includes squares or curves)."
+        ))
 
-# Step 2: Choose Objective
-st.subheader("🎯 Step 2: What Is the Objective?")
-st.markdown("What are you being asked to do with this equation?")
+# -----------------------
+# Step 2A: Immediate Objective
+# -----------------------
 
-answer_objective = st.radio(
-    "Choose the objective:",
-    [
-        "Solve for x",
-        "Graph the inequality",
-        "Simplify the expression",
-        "Evaluate the function at x = 3"
-    ],
-    key="step2"
-)
+st.subheader("🎯 Step 2A: What is the Given Objective?")
 
-if answer_objective:
-    if answer_objective == "Solve for x":
-        st.success("✅ Exactly. When you're presented with an equation like this, you're being asked to solve for the unknown.")
-    else:
-        st.error("❌ Not quite. This is a **linear equation**, so the goal is to **solve for x** — not to evaluate, simplify, or graph.")
+st.markdown("""
+*Imagine you're given this equation:*  
+**3x + 5 = 14**
+""")
 
-# Footer
-st.info("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
-st.caption("Last updated: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+st.radio("What is the objective?", [
+    "Simplify the expression",
+    "Solve for x",
+    "Evaluate at x = 5",
+    "Graph this equation"
+], key="objective_q")
+
+st.info("💡 On tests and in life, the objective is not chosen — it's given. Algebra helps you respond correctly.")
+
+# -----------------------
+# Step 2B: Broader Objectives
+# -----------------------
+
+st.subheader("🧭 Step 2B: What are *other* possible objectives for linear equations?")
+
+st.multiselect("Select all that apply:", [
+    "Solve for x",
+    "Graph the equation",
+    "Convert to standard form",
+    "Write from two points",
+    "Find intercepts",
+    "Verify solution",
+    "Model real-world scenarios"
+], key="multi_objective_q")
+
+st.caption("Not all objectives apply at once. But knowing what's *possible* strengthens your readiness.")
