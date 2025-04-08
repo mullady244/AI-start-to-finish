@@ -3,8 +3,8 @@ import streamlit as st
 import random
 
 # --- PAGE SETUP ---
-st.set_page_config(page_title="Algebra Map – Test XII", layout="wide")
-st.title("📘 Algebra Map – Version: Test XII")
+st.set_page_config(page_title="Algebra Map – Test XIII", layout="wide")
+st.title("📘 Algebra Map – Version: Test XIII")
 st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 st.markdown("---")
 
@@ -54,7 +54,7 @@ def objective_selection_step():
     selections = {}
     for choice in combined:
         if choice not in st.session_state.checkbox_states:
-            st.session_state.checkbox_states[choice] = choice in correct
+            st.session_state.checkbox_states[choice] = True  # ✅ All boxes start checked
         selections[choice] = st.checkbox(choice, value=st.session_state.checkbox_states[choice], key=choice)
 
     if st.button("Check Objectives"):
