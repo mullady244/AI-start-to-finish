@@ -3,19 +3,31 @@ import streamlit as st
 import random
 
 # --- PAGE SETUP ---
-st.set_page_config(page_title="Algebra Map – Test XIII", layout="wide")
-st.title("📘 Algebra Map – Version: Test XIII")
+st.set_page_config(page_title="Algebra Map – Test XIV", layout="wide")
+st.title("📘 Algebra Map – Version: Test XIV")
 st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 st.markdown("---")
 
 # --- SESSION STATE ---
 if "checkbox_states" not in st.session_state:
     st.session_state.checkbox_states = {}
-if "distractors_shuffled" not in st.session_state:
-    st.session_state.distractors_shuffled = random.sample([
+
+if "shuffled_objectives" not in st.session_state:
+    correct = [
+        "Solve for x", "Graph the equation", "Convert to standard form",
+        "Write from two points", "Find intercepts", "Verify solution", "Model real-world scenarios"
+    ]
+    distractors = [
         "Find cube root", "Calculate standard deviation", "Plot sinusoidal curve",
         "Factor a trinomial", "Graph a logarithmic curve", "Use imaginary numbers"
-    ], 3)
+    ]
+    selected_distractors = random.sample(distractors, 3)
+    full_list = correct + selected_distractors
+    random.shuffle(full_list)
+    st.session_state.shuffled_objectives = full_list
+    st.session_state.correct_objectives = correct
+    st.session_state.distractor_objectives = selected_distractors
+
 if "tf_response" not in st.session_state:
     st.session_state.tf_response = None
 if "tf_feedback" not in st.session_state:
@@ -43,23 +55,15 @@ def objective_selection_step():
     st.markdown("**What are the possible objectives/instructions for a linear equation?**")
     st.markdown("☑️ *Uncheck incorrect objectives. Leave all correct ones checked.*")
 
-    correct = [
-        "Solve for x", "Graph the equation", "Convert to standard form",
-        "Write from two points", "Find intercepts", "Verify solution", "Model real-world scenarios"
-    ]
-    wrong = st.session_state.distractors_shuffled
-    combined = correct + wrong
-    random.shuffle(combined)
-
     selections = {}
-    for choice in combined:
+    for choice in st.session_state.shuffled_objectives:
         if choice not in st.session_state.checkbox_states:
-            st.session_state.checkbox_states[choice] = True  # ✅ All boxes start checked
+            st.session_state.checkbox_states[choice] = True  # Start all checked
         selections[choice] = st.checkbox(choice, value=st.session_state.checkbox_states[choice], key=choice)
 
     if st.button("Check Objectives"):
-        incorrect_unchecked = [c for c in correct if not selections[c]]
-        incorrect_checked = [d for d in wrong if selections[d]]
+        incorrect_unchecked = [c for c in st.session_state.correct_objectives if not selections.get(c, False)]
+        incorrect_checked = [d for d in st.session_state.distractor_objectives if selections.get(d, False)]
 
         if incorrect_checked:
             st.error("❌ You checked one or more incorrect objectives.")
