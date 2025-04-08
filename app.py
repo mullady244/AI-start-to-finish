@@ -3,20 +3,18 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test VI", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test VII", layout="centered")
 
 # Header
-st.title("📘 Algebra Map – Version: Test VI")
+st.title("📘 Algebra Map – Version: Test VII")
 
-# Auto-refresh notice (for visual confirmation)
-st.success("✅ You’re viewing the latest version – Test VI")
-
+st.success("✅ You’re viewing the latest version – Test VII")
 st.write("🔢 **Linear Equation Learning Flow**")
 st.markdown("*This is a conceptual exploration space. We teach how to solve, but you solve in your notebook.*")
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 # -----------------------
-# Step 1: Rotating T/F questions (from pool)
+# Step 1: Identify Type (T/F)
 # -----------------------
 
 st.subheader("🔍 Step 1: Identify the Mathematical Statement Type")
@@ -47,32 +45,13 @@ if st.button("Check Answer"):
         ))
 
 # -----------------------
-# Step 2A: Immediate Objective
+# Step 2: Explore All Objectives
 # -----------------------
 
-st.subheader("🎯 Step 2A: What is the Given Objective?")
+st.subheader("🎯 Step 2: What are the Objectives or Instructions for Linear Equations?")
 
-st.markdown("""
-*Imagine you're given this equation:*  
-**3x + 5 = 14**
-""")
-
-st.radio("What is the objective?", [
-    "Simplify the expression",
-    "Solve for x",
-    "Evaluate at x = 5",
-    "Graph this equation"
-], key="objective_q")
-
-st.info("💡 On tests and in life, the objective is not chosen — it's given. Algebra helps you respond correctly.")
-
-# -----------------------
-# Step 2B: Broader Objectives
-# -----------------------
-
-st.subheader("🧭 Step 2B: What are *other* possible objectives for linear equations?")
-
-st.multiselect("Select all that apply:", [
+# All real linear objectives
+valid_objectives = [
     "Solve for x",
     "Graph the equation",
     "Convert to standard form",
@@ -80,6 +59,29 @@ st.multiselect("Select all that apply:", [
     "Find intercepts",
     "Verify solution",
     "Model real-world scenarios"
-], key="multi_objective_q")
+]
 
-st.caption("Not all objectives apply at once. But knowing what's *possible* strengthens your readiness.")
+# Irrelevant distractor options (3 rotate each time)
+distractor_pool = [
+    "Factor the trinomial",
+    "Find the vertex",
+    "Simplify a radical expression",
+    "Solve the quadratic",
+    "Determine end behavior",
+    "Calculate standard deviation",
+    "Find the period and amplitude",
+    "Identify the asymptotes",
+    "Use the quadratic formula",
+    "Rewrite in vertex form"
+]
+
+distractors = random.sample(distractor_pool, 3)
+
+# Combine and shuffle
+all_choices = valid_objectives + distractors
+random.shuffle(all_choices)
+
+st.write("Click all that apply:")
+selected = st.multiselect("Linear Equations – Possible Objectives", all_choices, key="obj_q")
+
+st.caption("💡 Knowing what's possible keeps you ready for *any* instruction on a test or in real life.")
