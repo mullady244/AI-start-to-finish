@@ -1,78 +1,81 @@
-from datetime import datetime
+
 import streamlit as st
 import random
+from datetime import datetime
 
-# --- PAGE SETUP ---
-st.set_page_config(page_title="Algebra Map – Test XV", layout="wide")
-st.title("📘 Algebra Map – Version: Test XV")
-st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+st.set_page_config(page_title="Algebra Map – Version: Test XVI", layout="wide")
+
+st.title("📘 Algebra Map – Version: Test XVI")
+
+# True/False Section
+st.header("🔢 Linear Equation Flow")
+st.latex("3x + 5 = 14")
+
+st.markdown("**The following is a Linear Equation.**")
+tf_answer = st.radio("Select True or False:", ["True", "False"], index=None)
+
+if tf_answer is not None:
+    if tf_answer == "True":
+        st.success("✅ Correct! This is a linear equation.")
+    else:
+        st.error("❌ Incorrect. This is a linear equation because the variable is raised only to the first power and the graph is a straight line.")
+
+# Objective Checkbox Section
 st.markdown("---")
+st.subheader("🎯 Linear Equations – What are the potential objectives/instructions?")
+st.markdown("Uncheck the **incorrect** objectives. Leave all correct ones checked.")
 
-# --- SESSION STATE ---
-if "checkbox_states" not in st.session_state:
-    st.session_state.checkbox_states = {}
+valid_objectives = [
+    "Solve for x",
+    "Convert to standard form",
+    "Convert to slope-intercept form",
+    "Convert to point-slope form",
+    "Graph the equation",
+    "Create a table of values",
+    "Find x- and y-intercepts",
+    "Identify slope and intercepts",
+    "Compare slopes of two lines",
+    "Determine if lines are parallel or perpendicular",
+    "Find intersection of two lines",
+    "Verify solution",
+    "Model real-world scenarios",
+    "Translate verbal → symbolic",
+    "Translate symbolic → verbal",
+    "Describe the rate of change",
+    "Write the equation from two points"
+]
 
-if "shuffled_objectives" not in st.session_state:
-    correct = [
-        "Solve for x", "Graph the equation", "Convert to standard form",
-        "Write from two points", "Find intercepts", "Verify solution", "Model real-world scenarios"
-    ]
-    distractors = [
-        "Find cube root", "Calculate standard deviation", "Plot sinusoidal curve",
-        "Factor a trinomial", "Graph a logarithmic curve", "Use imaginary numbers"
-    ]
-    selected_distractors = random.sample(distractors, 3)
-    full_list = correct + selected_distractors
-    random.shuffle(full_list)
-    st.session_state.shuffled_objectives = full_list
-    st.session_state.correct_objectives = correct
-    st.session_state.distractor_objectives = selected_distractors
+invalid_objectives_pool = [
+    "Factor a quadratic",
+    "Use the quadratic formula",
+    "Simplify a rational expression",
+    "Graph a parabola",
+    "Find domain of a rational function",
+    "Evaluate a logarithmic expression"
+]
 
-if "tf_response" not in st.session_state:
-    st.session_state.tf_response = None
-if "tf_feedback" not in st.session_state:
-    st.session_state.tf_feedback = ""
+# Shuffle only once per session
+if "shuffled_invalids" not in st.session_state:
+    st.session_state.shuffled_invalids = random.sample(invalid_objectives_pool, 3)
 
-# --- SECTION 1: T/F Type ID ---
-def type_identification_step():
-    st.subheader("🔍 Step 1: Type Identification")
-    st.markdown("**The following is a Linear Equation.**")
-    st.latex("3x + 5 = 14")
+display_objectives = valid_objectives + st.session_state.shuffled_invalids
+random.shuffle(display_objectives)
 
-    response = st.radio("True or False?", ["True", "False"], index=None, key="tf_radio")
-    if st.button("Submit T/F Answer"):
-        st.session_state.tf_response = response
-        if response == "True":
-            st.session_state.tf_feedback = "✅ Correct! This is a linear equation because the variable is raised only to the power of 1."
-        else:
-            st.session_state.tf_feedback = "❌ Incorrect. This is a linear equation because the highest power of x is 1."
-    if st.session_state.tf_response:
-        st.info(st.session_state.tf_feedback)
+checked_status = {obj: st.checkbox(obj, value=True) for obj in display_objectives}
 
-# --- SECTION 2: Objective Checkboxes ---
-def objective_selection_step():
-    st.subheader("🎯 Step 2: Objectives for Linear Equations")
-    st.markdown("**What are the possible objectives/instructions for a linear equation?**")
-    st.markdown("☑️ *Uncheck incorrect objectives. Leave all correct ones checked.*")
-
-    selections = {}
-    for choice in st.session_state.shuffled_objectives:
-        if choice not in st.session_state.checkbox_states:
-            st.session_state.checkbox_states[choice] = True  # Start all checked
-        selections[choice] = st.checkbox(choice, value=st.session_state.checkbox_states[choice], key=choice)
-
-    if st.button("Check Objectives"):
-        incorrect_unchecked = [c for c in st.session_state.correct_objectives if not selections.get(c, False)]
-        incorrect_checked = [d for d in st.session_state.distractor_objectives if selections.get(d, False)]
-
+# Validation
+if st.button("Check Your Answers"):
+    incorrect_checked = [obj for obj in st.session_state.shuffled_invalids if checked_status.get(obj)]
+    correct_unchecked = [obj for obj in valid_objectives if not checked_status.get(obj)]
+    
+    if not incorrect_checked and not correct_unchecked:
+        st.success("✅ Well done! You've correctly identified all relevant objectives.")
+    else:
         if incorrect_checked:
-            st.error("❌ You checked one or more incorrect objectives.")
-        elif incorrect_unchecked:
-            st.warning("⚠️ You missed one or more correct objectives.")
-        else:
-            st.success("✅ Excellent! You correctly left all valid objectives checked and removed all invalid ones.")
+            st.error(f"❌ The following are **not** valid objectives for linear equations: {', '.join(incorrect_checked)}")
+        if correct_unchecked:
+            st.error(f"⚠️ You mistakenly **unchecked** valid objectives: {', '.join(correct_unchecked)}")
 
-# --- RUN MODULES ---
-type_identification_step()
+# Footer with timestamp
 st.markdown("---")
-objective_selection_step()
+st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
