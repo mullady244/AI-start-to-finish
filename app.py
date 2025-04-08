@@ -3,12 +3,12 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test VII", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test VIII", layout="centered")
 
 # Header
-st.title("📘 Algebra Map – Version: Test VII")
+st.title("📘 Algebra Map – Version: Test VIII")
 
-st.success("✅ You’re viewing the latest version – Test VII")
+st.success("✅ You’re viewing the latest version – Test VIII")
 st.write("🔢 **Linear Equation Learning Flow**")
 st.markdown("*This is a conceptual exploration space. We teach how to solve, but you solve in your notebook.*")
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -45,12 +45,12 @@ if st.button("Check Answer"):
         ))
 
 # -----------------------
-# Step 2: Explore All Objectives
+# Step 2: Explore All Objectives Using Checkboxes
 # -----------------------
 
 st.subheader("🎯 Step 2: What are the Objectives or Instructions for Linear Equations?")
+st.write("Click all that apply:")
 
-# All real linear objectives
 valid_objectives = [
     "Solve for x",
     "Graph the equation",
@@ -61,7 +61,6 @@ valid_objectives = [
     "Model real-world scenarios"
 ]
 
-# Irrelevant distractor options (3 rotate each time)
 distractor_pool = [
     "Factor the trinomial",
     "Find the vertex",
@@ -75,13 +74,17 @@ distractor_pool = [
     "Rewrite in vertex form"
 ]
 
+# Pick 3 distractors
 distractors = random.sample(distractor_pool, 3)
 
 # Combine and shuffle
-all_choices = valid_objectives + distractors
-random.shuffle(all_choices)
+all_options = valid_objectives + distractors
+random.shuffle(all_options)
 
-st.write("Click all that apply:")
-selected = st.multiselect("Linear Equations – Possible Objectives", all_choices, key="obj_q")
+# Render checkboxes
+selected_options = []
+for option in all_options:
+    if st.checkbox(option):
+        selected_options.append(option)
 
 st.caption("💡 Knowing what's possible keeps you ready for *any* instruction on a test or in real life.")
