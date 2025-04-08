@@ -3,8 +3,8 @@ import streamlit as st
 import random
 
 # --- PAGE SETUP ---
-st.set_page_config(page_title="Algebra Map – Test XIV", layout="wide")
-st.title("📘 Algebra Map – Version: Test XIV")
+st.set_page_config(page_title="Algebra Map – Test XV", layout="wide")
+st.title("📘 Algebra Map – Version: Test XV")
 st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 st.markdown("---")
 
@@ -36,7 +36,7 @@ if "tf_feedback" not in st.session_state:
 # --- SECTION 1: T/F Type ID ---
 def type_identification_step():
     st.subheader("🔍 Step 1: Type Identification")
-    st.markdown("Is the following a **Linear Equation**?")
+    st.markdown("**The following is a Linear Equation.**")
     st.latex("3x + 5 = 14")
 
     response = st.radio("True or False?", ["True", "False"], index=None, key="tf_radio")
