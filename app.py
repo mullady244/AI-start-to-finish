@@ -3,12 +3,11 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test VIII", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test IX", layout="centered")
 
 # Header
-st.title("📘 Algebra Map – Version: Test VIII")
-
-st.success("✅ You’re viewing the latest version – Test VIII")
+st.title("📘 Algebra Map – Version: Test IX")
+st.success("✅ You’re viewing the latest version – Test IX")
 st.write("🔢 **Linear Equation Learning Flow**")
 st.markdown("*This is a conceptual exploration space. We teach how to solve, but you solve in your notebook.*")
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -45,12 +44,13 @@ if st.button("Check Answer"):
         ))
 
 # -----------------------
-# Step 2: Explore All Objectives Using Checkboxes
+# Step 2: Objective Identification (Stable)
 # -----------------------
 
 st.subheader("🎯 Step 2: What are the Objectives or Instructions for Linear Equations?")
 st.write("Click all that apply:")
 
+# Static correct objectives
 valid_objectives = [
     "Solve for x",
     "Graph the equation",
@@ -61,6 +61,7 @@ valid_objectives = [
     "Model real-world scenarios"
 ]
 
+# Distractor pool
 distractor_pool = [
     "Factor the trinomial",
     "Find the vertex",
@@ -74,16 +75,16 @@ distractor_pool = [
     "Rewrite in vertex form"
 ]
 
-# Pick 3 distractors
-distractors = random.sample(distractor_pool, 3)
+# Use session state to shuffle once
+if "objective_options" not in st.session_state:
+    distractors = random.sample(distractor_pool, 3)
+    combined = valid_objectives + distractors
+    random.shuffle(combined)
+    st.session_state.objective_options = combined
 
-# Combine and shuffle
-all_options = valid_objectives + distractors
-random.shuffle(all_options)
-
-# Render checkboxes
+# Display checkboxes
 selected_options = []
-for option in all_options:
+for option in st.session_state.objective_options:
     if st.checkbox(option):
         selected_options.append(option)
 
