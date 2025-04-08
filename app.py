@@ -1,81 +1,71 @@
-
-import streamlit as st
 from datetime import datetime
+import streamlit as st
 import random
 
-st.set_page_config(page_title="Algebra Map – Version: Test X", layout="centered")
+# --- PAGE SETUP ---
+st.set_page_config(page_title="Algebra Map – Test XI", layout="wide")
+st.title("📘 Algebra Map – Version: Test XI")
+st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+st.markdown("---")
 
-# Header
-st.title("📘 Algebra Map – Version: Test X")
-st.success("✅ You’re viewing the latest version – Test X")
-st.write("🔢 **Linear Equation Learning Flow**")
-st.markdown("*This is a conceptual exploration space. We teach how to solve, but you solve in your notebook.*")
-st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+# --- SESSION STATE SETUP ---
+if "objectives_checked" not in st.session_state:
+    st.session_state.objectives_checked = []
+if "distractors_shuffled" not in st.session_state:
+    st.session_state.distractors_shuffled = random.sample([
+        "Find cube root", "Calculate standard deviation", "Plot sinusoidal curve",
+        "Factor a trinomial", "Graph a logarithmic curve", "Use imaginary numbers"
+    ], 3)
+if "tf_response" not in st.session_state:
+    st.session_state.tf_response = None
+if "tf_feedback" not in st.session_state:
+    st.session_state.tf_feedback = ""
 
-# -----------------------
-# Step: Objective Evaluation (Uncheck Wrong)
-# -----------------------
+# --- SECTION 1: TYPE IDENTIFICATION (T/F) ---
+def type_identification_step():
+    st.subheader("🔍 Step 1: Type Identification")
+    st.markdown("Is the following a **Linear Equation**?")
+    st.latex("3x + 5 = 14")
 
-st.subheader("🎯 Step: What are the Objectives or Instructions for Linear Equations?")
-st.write("All items are currently selected. Uncheck the ones that do **not** apply.")
+    response = st.radio("True or False?", ["True", "False"], key="tf_radio")
+    if st.button("Submit T/F Answer"):
+        st.session_state.tf_response = response
+        if response == "True":
+            st.session_state.tf_feedback = "✅ Correct! This is a linear equation because the variable is raised only to the power of 1."
+        else:
+            st.session_state.tf_feedback = "❌ Incorrect. This is a linear equation because the highest power of x is 1."
+    if st.session_state.tf_response:
+        st.info(st.session_state.tf_feedback)
 
-# Valid objectives
-valid_objectives = [
-    "Solve for x",
-    "Graph the equation",
-    "Convert to standard form",
-    "Write from two points",
-    "Find intercepts",
-    "Verify solution",
-    "Model real-world scenarios"
-]
+# --- SECTION 2: OBJECTIVE SELECTION (MULTI-CHECKBOX) ---
+def objective_selection_step():
+    st.subheader("🎯 Step 2: Objectives for Linear Equations")
+    st.markdown("**What are the possible objectives/instructions for a linear equation?**")
+    st.markdown("🔘 *Check all that apply*")
 
-# Distractors
-distractor_pool = [
-    "Factor the trinomial",
-    "Find the vertex",
-    "Simplify a radical expression",
-    "Use the quadratic formula",
-    "Identify the asymptotes",
-    "Find the amplitude",
-    "Determine end behavior",
-    "Rewrite in vertex form"
-]
+    correct_objectives = [
+        "Solve for x", "Graph the equation", "Convert to standard form",
+        "Write from two points", "Find intercepts", "Verify solution", "Model real-world scenarios"
+    ]
+    distractors = st.session_state.distractors_shuffled
+    all_choices = correct_objectives + distractors
+    random.shuffle(all_choices)
 
-# Shuffle on first session only
-if "all_options" not in st.session_state:
-    selected_distractors = random.sample(distractor_pool, 3)
-    all_options = valid_objectives + selected_distractors
-    random.shuffle(all_options)
-    st.session_state.all_options = all_options
-    st.session_state.feedback = {}
+    selected = st.multiselect("Choose all valid objectives:", options=all_choices)
 
-# Display all options with default checked
-user_selection = {}
-for option in st.session_state.all_options:
-    user_selection[option] = st.checkbox(option, value=True, key=option)
+    incorrect_unchecked = [d for d in distractors if d not in selected]
+    correct_unchecked = [c for c in correct_objectives if c not in selected]
+    incorrect_checked = [d for d in distractors if d in selected]
 
-# Evaluation button
-if st.button("Check Your Selections"):
-    wrong_unchecked = []
-    correct_unchecked = []
-    for option, is_checked in user_selection.items():
-        if option in valid_objectives and not is_checked:
-            correct_unchecked.append(option)
-        elif option not in valid_objectives and is_checked:
-            wrong_unchecked.append(option)
+    if st.button("Check My Selection"):
+        if incorrect_checked:
+            st.error("❌ You selected one or more incorrect objectives.")
+        elif correct_unchecked:
+            st.warning("⚠️ You missed one or more correct objectives.")
+        else:
+            st.success("✅ Great job! You correctly selected all valid objectives and avoided the incorrect ones.")
 
-    if correct_unchecked:
-        st.error("🚫 You unchecked one or more valid objectives:")
-        for item in correct_unchecked:
-            st.markdown(f"- ❗ `{item}` is an essential linear objective.")
-    elif all(not user_selection[item] for item in st.session_state.all_options if item not in valid_objectives):
-        st.success("🎉 Great job! You’ve correctly identified all valid objectives.")
-    else:
-        st.warning("🔎 You still have one or more incorrect items selected. Try again!")
-
-# Reset button
-if st.button("🔄 Reset"):
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
-    st.experimental_rerun()
+# --- LOAD MODULES ---
+type_identification_step()
+st.markdown("---")
+objective_selection_step()
