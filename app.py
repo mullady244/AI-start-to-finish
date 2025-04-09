@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 34", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 35", layout="centered")
 
-st.title("Algebra Map – Version: Test 34")
+st.title("Algebra Map – Version: Test 35")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -74,39 +74,34 @@ rotating_incorrect_pool = [
     "Identify asymptotes of a rational function"
 ]
 
-# 🔁 Randomly pick 3 fake objectives
-random.seed(st.session_state.get("seed_obj", random.randint(0, 999999)))
+# 🔁 Pick 3 fake objectives randomly (once per session)
 if "seed_obj" not in st.session_state:
     st.session_state["seed_obj"] = random.randint(0, 999999)
+random.seed(st.session_state["seed_obj"])
 incorrect_objectives = random.sample(rotating_incorrect_pool, 3)
 
-# 📦 Flatten correct objectives for logic handling
+# 📦 Flatten correct objectives and combine
 correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
-
-# 🧠 Merge and track state
 all_objectives = correct_objectives + incorrect_objectives
-random.shuffle(all_objectives)
 
-# 🧾 Initialize checkbox states
-# 🔁 Ensure objectives initialize correctly ONCE per session
+# 🧾 Initialize checkbox states ONCE per session
 if "objectives_initialized" not in st.session_state:
     st.session_state.objective_states = {
-        obj: True
-        for obj in all_objectives
+        obj: True for obj in all_objectives
     }
     st.session_state.objectives_initialized = True
 
-# ✅ Show checkboxes grouped by category
+# ✅ Show correct objectives grouped by category
 for category, items in grouped_correct_objectives.items():
     with st.expander(category, expanded=True):
         for obj in items:
-            current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
+            current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
             st.session_state.objective_states[obj] = current_state
 
 # 🚫 Show incorrect distractors under separate header
 with st.expander("🚫 Not Linear Equation Objectives (planted distractions)", expanded=True):
     for obj in incorrect_objectives:
-        current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
+        current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
         st.session_state.objective_states[obj] = current_state
 
 # 🧠 Feedback logic
