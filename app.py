@@ -98,13 +98,13 @@ if "objective_states" not in st.session_state or set(st.session_state.objective_
 for category, items in grouped_correct_objectives.items():
     with st.expander(category, expanded=True):
         for obj in items:
-            current_state = st.checkbox(current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
+            current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
             st.session_state.objective_states[obj] = current_state
 
 # 🚫 Show incorrect distractors under separate header
 with st.expander("🚫 Not Linear Equation Objectives (planted distractions)", expanded=True):
     for obj in incorrect_objectives:
-        current_state = st.checkbox(current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
+        current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
         st.session_state.objective_states[obj] = current_state
 
 # 🧠 Feedback logic
