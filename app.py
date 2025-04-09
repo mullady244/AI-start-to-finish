@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 26", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 27", layout="centered")
 
-st.title("Algebra Map – Version: Test 26")
+st.title("Algebra Map – Version: Test 27")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -89,7 +89,10 @@ random.shuffle(all_objectives)
 
 # 🧾 Initialize checkbox states
 if "objective_states" not in st.session_state:
-    st.session_state.objective_states = {obj: True for obj in all_objectives}
+    st.session_state.objective_states = {
+    obj: True if obj in correct_objectives else False
+    for obj in all_objectives
+}
 
 # ✅ Show checkboxes grouped by category
 for category, items in grouped_correct_objectives.items():
