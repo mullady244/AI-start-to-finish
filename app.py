@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 38", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 39", layout="centered")
 
-st.title("Algebra Map – Version: Test 38")
+st.title("Algebra Map – Version: Test 39")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -97,20 +97,26 @@ random_categories = random.sample(category_names, 3)
 injected_incorrects = dict(zip(random_categories, incorrect_objectives))
 
 # ✅ Show all objectives grouped — injecting fake ones
+if "last_changed_obj" not in st.session_state:
+    st.session_state["last_changed_obj"] = None
+
 for category, items in grouped_correct_objectives.items():
     with st.expander(category, expanded=True):
         combined_items = items + ([injected_incorrects[category]] if category in injected_incorrects else [])
         for obj in combined_items:
-            current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
+            prev = st.session_state.objective_states.get(obj, True)
+            current_state = st.checkbox(obj, value=prev, key=obj)
+
+            if current_state != prev:
+                st.session_state["last_changed_obj"] = obj
+
             st.session_state.objective_states[obj] = current_state
 
-# 🧠 Feedback logic
-incorrect_unchecked = [obj for obj in incorrect_objectives if not st.session_state.objective_states.get(obj, True)]
-correct_unchecked = [obj for obj in correct_objectives if not st.session_state.objective_states.get(obj, True)]
-
-if correct_unchecked:
-    st.error("❌ You unchecked one or more correct objectives. Review and try again.")
-elif len(incorrect_unchecked) == len(incorrect_objectives):
-    st.success("✅ Well done! You correctly identified all the valid objectives.")
+            # 🔁 Inline feedback directly under the item that was just changed
+            if st.session_state["last_changed_obj"] == obj:
+                if obj in correct_objectives and not current_state:
+                    st.error("❌ This is a valid objective.")
+                elif obj in incorrect_objectives and not current_state:
+                    st.success("✅ Correct. This is not a valid objective.")
 
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
