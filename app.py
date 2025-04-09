@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 40", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 41", layout="centered")
 
-st.title("Algebra Map – Version: Test 40")
+st.title("Algebra Map – Version: Test 41")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -113,15 +113,17 @@ for category, items in grouped_correct_objectives.items():
             st.session_state.objective_states[obj] = current_state
 
             # 🔁 Inline feedback directly under the item that was just changed
-            if st.session_state["last_changed_obj"] == obj:
-                if obj in correct_objectives and not current_state:
-                    st.error("❌ This is a valid objective.")
-                elif obj in incorrect_objectives and not current_state:
-    unchecked_count = sum(not st.session_state.objective_states.get(inc, True) for inc in incorrect_objectives)
-    
-    if unchecked_count == len(incorrect_objectives):
-        st.success("✅ You are complete. All incorrect objectives removed.")
-    else:
-        st.success("✅ Correct. This is not a valid objective.")
+if st.session_state["last_changed_obj"] == obj:
+    if obj in correct_objectives and not current_state:
+        st.error("❌ This is a valid objective.")
+    elif obj in incorrect_objectives and not current_state:
+        unchecked_count = sum(
+            not st.session_state.objective_states.get(inc, True) 
+            for inc in incorrect_objectives
+        )
+        if unchecked_count == len(incorrect_objectives):
+            st.success("✅ You are complete. All incorrect objectives removed.")
+        else:
+            st.success("✅ Correct. This is not a valid objective.")
 
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
