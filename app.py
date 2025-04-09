@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 24", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 25", layout="centered")
 
-st.title("Algebra Map – Version: Test 24")
+st.title("Algebra Map – Version: Test 25")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -19,7 +19,7 @@ equation = "3x + 5 = 14"
 st.latex(equation)
 st.markdown("**The equation above is a Linear Equation.**")
 
-type_response = st.radio("True or False?", options=["", "True", "False"], index=0)
+type_response = st.radio("True or False?", options=["True", "False"], index=None)
 
 if type_response:
     if type_response == "True":
