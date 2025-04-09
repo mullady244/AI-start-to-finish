@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 37", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 38", layout="centered")
 
-st.title("Algebra Map – Version: Test 37")
+st.title("Algebra Map – Version: Test 38")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -99,7 +99,7 @@ injected_incorrects = dict(zip(random_categories, incorrect_objectives))
 # ✅ Show all objectives grouped — injecting fake ones
 for category, items in grouped_correct_objectives.items():
     with st.expander(category, expanded=True):
-        combined_items = items + injected_incorrects.get(category, [])
+        combined_items = items + ([injected_incorrects[category]] if category in injected_incorrects else [])
         for obj in combined_items:
             current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
             st.session_state.objective_states[obj] = current_state
