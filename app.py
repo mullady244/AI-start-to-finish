@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 35", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 36", layout="centered")
 
-st.title("Algebra Map – Version: Test 35")
+st.title("Algebra Map – Version: Test 36")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -87,7 +87,7 @@ all_objectives = correct_objectives + incorrect_objectives
 # 🧾 Initialize checkbox states ONCE per session
 if "objectives_initialized" not in st.session_state:
     st.session_state.objective_states = {
-        obj: True for obj in all_objectives
+        obj: True for obj in all_objectives  # ✅ All boxes start checked
     }
     st.session_state.objectives_initialized = True
 
