@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 30", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 31", layout="centered")
 
-st.title("Algebra Map – Version: Test 30")
+st.title("Algebra Map – Version: Test 31")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -98,13 +98,13 @@ if "objective_states" not in st.session_state or set(st.session_state.objective_
 for category, items in grouped_correct_objectives.items():
     with st.expander(category, expanded=True):
         for obj in items:
-            current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
+            current_state = st.checkbox(current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
             st.session_state.objective_states[obj] = current_state
 
 # 🚫 Show incorrect distractors under separate header
 with st.expander("🚫 Not Linear Equation Objectives (planted distractions)", expanded=True):
     for obj in incorrect_objectives:
-        current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
+        current_state = st.checkbox(current_state = st.checkbox(obj, value=st.session_state.objective_states[obj], key=obj)
         st.session_state.objective_states[obj] = current_state
 
 # 🧠 Feedback logic
