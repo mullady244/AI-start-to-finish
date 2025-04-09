@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 28", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 29", layout="centered")
 
-st.title("Algebra Map – Version: Test 28")
+st.title("Algebra Map – Version: Test 29")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -92,6 +92,36 @@ if "objective_states" not in st.session_state or set(st.session_state.objective_
     st.session_state.objective_states = {
     obj: True if obj in correct_objectives else False
     for obj in all_objectives
+}
+# ✅ Group correct objectives AFTER all_objectives and session state setup
+grouped_correct_objectives = {
+    "🔢 Algebraic Manipulation": ["Solve for x"],
+    "🔁 Form Conversion": [
+        "Convert to standard form",
+        "Convert to slope-intercept form",
+        "Convert to point-slope form"
+    ],
+    "📊 Visual Representation": [
+        "Graph the equation",
+        "Create a table of values"
+    ],
+    "📍 Feature Extraction": [
+        "Find x- and y-intercepts",
+        "Identify slope and intercepts"
+    ],
+    "🔍 Conceptual Comparison": [
+        "Compare slopes of two lines",
+        "Determine if lines are parallel, perpendicular, or neither"
+    ],
+    "➕ System Relationships": ["Find intersection of two lines"],
+    "🧠 Reasoning": ["Verify solution"],
+    "🌍 Real-World Modeling": ["Model real-world scenarios"],
+    "🔤 Language Link": [
+        "Translate verbal → symbolic",
+        "Translate symbolic → verbal"
+    ],
+    "📈 Rate Understanding": ["Describe the rate of change"],
+    "✍️ Equation Creation": ["Write the equation from two points"]
 }
 
 # ✅ Show checkboxes grouped by category
