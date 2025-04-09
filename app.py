@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 36", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 37", layout="centered")
 
-st.title("Algebra Map – Version: Test 36")
+st.title("Algebra Map – Version: Test 37")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -91,18 +91,18 @@ if "objectives_initialized" not in st.session_state:
     }
     st.session_state.objectives_initialized = True
 
-# ✅ Show correct objectives grouped by category
+# ✅ Map incorrect objectives into 3 random categories
+category_names = list(grouped_correct_objectives.keys())
+random_categories = random.sample(category_names, 3)
+injected_incorrects = dict(zip(random_categories, incorrect_objectives))
+
+# ✅ Show all objectives grouped — injecting fake ones
 for category, items in grouped_correct_objectives.items():
     with st.expander(category, expanded=True):
-        for obj in items:
+        combined_items = items + injected_incorrects.get(category, [])
+        for obj in combined_items:
             current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
             st.session_state.objective_states[obj] = current_state
-
-# 🚫 Show incorrect distractors under separate header
-with st.expander("🚫 Not Linear Equation Objectives (planted distractions)", expanded=True):
-    for obj in incorrect_objectives:
-        current_state = st.checkbox(obj, value=st.session_state.objective_states.get(obj, True), key=obj)
-        st.session_state.objective_states[obj] = current_state
 
 # 🧠 Feedback logic
 incorrect_unchecked = [obj for obj in incorrect_objectives if not st.session_state.objective_states.get(obj, True)]
