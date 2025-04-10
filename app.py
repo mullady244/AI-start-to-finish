@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 43", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 44", layout="centered")
 
-st.title("Algebra Map – Version: Test 43")
+st.title("Algebra Map – Version: Test 44")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -28,12 +28,12 @@ if type_response:
         st.error("❌ Incorrect. This is indeed a linear equation.")
 
 # -----------------------------
-# 🎯 OBJECTIVES – Categorize the Objectives (Dropdown Assignment)
+# 🎯 OBJECTIVES - Categorize by Dropdown with Feedback
 # -----------------------------
-st.subheader("🎯 Objectives for Linear Equations")
-st.markdown("Assign the correct objectives to each category using the dropdown menu. Some items do not belong in any category — leave them unassigned.")
+st.subheader("🌟 Categorize the Objectives")
+st.markdown("Select the appropriate objectives under each category. Some distractors are mixed in!")
 
-# ✅ Define grouped correct objectives by category
+# 🔢 Define grouped correct objectives by category
 grouped_correct_objectives = {
     "🔢 Algebraic Manipulation": ["Solve for x"],
     "🔁 Form Conversion": [
@@ -56,7 +56,7 @@ grouped_correct_objectives = {
     "➕ System Relationships": ["Find intersection of two lines"],
     "🧠 Reasoning": ["Verify solution"],
     "🌍 Real-World Modeling": ["Model real-world scenarios"],
-    "🔤 Language Link": [
+    "🌤️ Language Link": [
         "Translate verbal → symbolic",
         "Translate symbolic → verbal"
     ],
@@ -64,47 +64,48 @@ grouped_correct_objectives = {
     "✍️ Equation Creation": ["Write the equation from two points"]
 }
 
-# 🚫 Rotating incorrect distractors (some realistic, some clearly wrong)
+# 🚫 Rotating incorrect objectives
 rotating_incorrect_pool = [
-    "Factor a trinomial",
-    "Calculate the volume of a cone",
-    "Simplify a radical",
     "Find the area of a circle",
-    "Identify asymptotes of a rational function",
+    "Factor a trinomial",
+    "Simplify a radical",
     "Determine triangle similarity",
-    "Find the domain of a function",
-    "Use quadratic formula",
+    "Calculate the volume of a cone",
+    "Identify asymptotes of a rational function"
 ]
 
-# 🔁 Randomize distractors (5)
-if "seed_dropdown" not in st.session_state:
-    st.session_state["seed_dropdown"] = random.randint(0, 999999)
-random.seed(st.session_state["seed_dropdown"])
-distractors = random.sample(rotating_incorrect_pool, 5)
+# ⟳ Sample 3 incorrect per session
+if "shuffled_objectives" not in st.session_state:
+    incorrect_objectives = random.sample(rotating_incorrect_pool, 3)
+    correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
+    st.session_state.shuffled_objectives = sorted(correct_objectives + incorrect_objectives)
 
-# 📦 Build full list of shuffled options
-all_true_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
-all_dropdown_options = all_true_objectives + distractors
-random.shuffle(all_dropdown_options)
+# 🔢 Track correct and incorrect sets
+correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
+incorrect_objectives = [item for item in st.session_state.shuffled_objectives if item not in correct_objectives]
 
-# 🧠 Store user picks by category
-if "dropdown_selections" not in st.session_state:
-    st.session_state.dropdown_selections = {}
+# 📝 Record user selections per category
+if "category_selections" not in st.session_state:
+    st.session_state.category_selections = {cat: [] for cat in grouped_correct_objectives.keys()}
 
-# 🔽 Create a dropdown per category
-for category in grouped_correct_objectives.keys():
-    selection = st.multiselect(
-        f"{category}:",
-        options=all_dropdown_options,
-        default=st.session_state.dropdown_selections.get(category, []),
-        key=f"dropdown_{category}"
+# 🌟 Dropdown and feedback per category
+for category, correct_items in grouped_correct_objectives.items():
+    st.markdown(f"### {category}")
+    options = st.multiselect(
+        f"Select objectives for {category}:",
+        options=st.session_state.shuffled_objectives,
+        default=st.session_state.category_selections[category],
+        key=f"select_{category}"
     )
-    st.session_state.dropdown_selections[category] = selection
+    st.session_state.category_selections[category] = options
 
-    # 👁️ Show full selections below to avoid truncation
-    if selection:
-        st.markdown("✅ You selected:")
-        for obj in selection:
-            st.markdown(f"- {obj}")
+    # Feedback under dropdown
+    for obj in options:
+        if obj in correct_items:
+            st.success(f"{obj} ✔️ Correct")
+        elif obj in correct_objectives:
+            st.warning(f"{obj} ⚠️ Correct for another category")
+        else:
+            st.error(f"{obj} ❌ Not a valid objective")
 
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
