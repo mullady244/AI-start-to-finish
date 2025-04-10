@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 44", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 45", layout="centered")
 
-st.title("Algebra Map – Version: Test 44")
+st.title("Algebra Map – Version: Test 45")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -28,12 +28,12 @@ if type_response:
         st.error("❌ Incorrect. This is indeed a linear equation.")
 
 # -----------------------------
-# 🎯 OBJECTIVES - Categorize by Dropdown with Feedback
+# 🎯 OBJECTIVES – Categorize the Objectives (Dropdown View)
 # -----------------------------
-st.subheader("🌟 Categorize the Objectives")
-st.markdown("Select the appropriate objectives under each category. Some distractors are mixed in!")
+st.subheader("🎯 Objective Categorization")
+st.markdown("Place each objective under its correct category. All categories contain valid objectives, but some options do NOT belong.")
 
-# 🔢 Define grouped correct objectives by category
+# ✅ Define grouped correct objectives by category
 grouped_correct_objectives = {
     "🔢 Algebraic Manipulation": ["Solve for x"],
     "🔁 Form Conversion": [
@@ -56,7 +56,7 @@ grouped_correct_objectives = {
     "➕ System Relationships": ["Find intersection of two lines"],
     "🧠 Reasoning": ["Verify solution"],
     "🌍 Real-World Modeling": ["Model real-world scenarios"],
-    "🌤️ Language Link": [
+    "🔤 Language Link": [
         "Translate verbal → symbolic",
         "Translate symbolic → verbal"
     ],
@@ -64,7 +64,7 @@ grouped_correct_objectives = {
     "✍️ Equation Creation": ["Write the equation from two points"]
 }
 
-# 🚫 Rotating incorrect objectives
+# 🚫 Fake (planted distractor) objectives
 rotating_incorrect_pool = [
     "Find the area of a circle",
     "Factor a trinomial",
@@ -74,38 +74,34 @@ rotating_incorrect_pool = [
     "Identify asymptotes of a rational function"
 ]
 
-# ⟳ Sample 3 incorrect per session
-if "shuffled_objectives" not in st.session_state:
-    incorrect_objectives = random.sample(rotating_incorrect_pool, 3)
-    correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
-    st.session_state.shuffled_objectives = sorted(correct_objectives + incorrect_objectives)
-
-# 🔢 Track correct and incorrect sets
+# 🧠 Prep all objectives for dropdowns
 correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
-incorrect_objectives = [item for item in st.session_state.shuffled_objectives if item not in correct_objectives]
+all_objective_options = correct_objectives + rotating_incorrect_pool
 
-# 📝 Record user selections per category
-if "category_selections" not in st.session_state:
-    st.session_state.category_selections = {cat: [] for cat in grouped_correct_objectives.keys()}
+# 📥 Track user selections per category
+for category, valid_items in grouped_correct_objectives.items():
+    slug = category.split()[0].strip("🔠🔢➕📊📍🔍🧠🌍🔤📈✍️").lower()
+    key_name = f"selected_{slug}"
 
-# 🌟 Dropdown and feedback per category
-for category, correct_items in grouped_correct_objectives.items():
-    st.markdown(f"### {category}")
-    options = st.multiselect(
-        f"Select objectives for {category}:",
-        options=st.session_state.shuffled_objectives,
-        default=st.session_state.category_selections[category],
-        key=f"select_{category}"
+    if key_name not in st.session_state:
+        st.session_state[key_name] = []
+
+    selected = st.multiselect(
+        f"{category}: Select all objectives that apply",
+        options=all_objective_options,
+        default=st.session_state[key_name],
+        key=key_name
     )
-    st.session_state.category_selections[category] = options
 
-    # Feedback under dropdown
-    for obj in options:
-        if obj in correct_items:
-            st.success(f"{obj} ✔️ Correct")
+    st.session_state[key_name] = selected
+
+    # 🧠 Show line-by-line feedback
+    for obj in selected:
+        if obj in valid_items:
+            st.success(f"✅ {obj} is correct for this category.")
         elif obj in correct_objectives:
-            st.warning(f"{obj} ⚠️ Correct for another category")
+            st.warning(f"⚠️ {obj} is a valid objective but belongs in another category.")
         else:
-            st.error(f"{obj} ❌ Not a valid objective")
+            st.error(f"❌ {obj} is not a valid objective for linear equations.")
 
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
