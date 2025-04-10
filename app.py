@@ -3,7 +3,7 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 4", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 47", layout="centered")
 
 st.title("Algebra Map – Version: Test 47")
 
