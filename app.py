@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 50", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 49", layout="centered")
 
-st.title("Algebra Map – Version: Test 50")
+st.title("Algebra Map – Version: Test 49")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -33,7 +33,7 @@ if type_response:
 st.subheader("🎯 Objective Categorization")
 st.markdown("Place each objective under its correct category. All categories contain valid objectives, but some options do NOT belong.")
 
-# ✅ Define correct objectives grouped by category
+# ✅ Define grouped correct objectives by category
 grouped_correct_objectives = {
     "🔢 Algebraic Manipulation": ["Solve for x"],
     "🔁 Form Conversion": [
@@ -64,7 +64,7 @@ grouped_correct_objectives = {
     "✍️ Equation Creation": ["Write the equation from two points"]
 }
 
-# 🚫 Rotating incorrect objectives
+# 🚫 Define distractors
 rotating_incorrect_pool = [
     "Find the area of a circle",
     "Factor a trinomial",
@@ -74,57 +74,42 @@ rotating_incorrect_pool = [
     "Identify asymptotes of a rational function"
 ]
 
-# 📦 Initialize shuffled pool (once per session)
+# 🎯 Prepare objective pool (3 distractors per session)
 if "dropdown_objectives_pool" not in st.session_state:
     random.seed(st.session_state.get("seed_dropdown", random.randint(0, 999999)))
     incorrect_objectives = random.sample(rotating_incorrect_pool, 3)
     correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
     st.session_state.dropdown_objectives_pool = sorted(correct_objectives + incorrect_objectives)
-    st.session_state.dropdown_feedback = {cat: [] for cat in grouped_correct_objectives}
-    st.session_state.dropdown_selections = {cat: [] for cat in grouped_correct_objectives}
 
-# 🔁 Redefine correct/incorrect every load
+# 🎯 Track correct and incorrect
 correct_objectives = [item for sublist in grouped_correct_objectives.values() for item in sublist]
 incorrect_objectives = [obj for obj in st.session_state.dropdown_objectives_pool if obj not in correct_objectives]
 
-# 🧠 Dropdowns and feedback
+# 🧠 Track selections per category
+if "dropdown_selections" not in st.session_state:
+    st.session_state.dropdown_selections = {category: [] for category in grouped_correct_objectives.keys()}
+
+# 🎯 Generate dropdown per category
 for category, valid_items in grouped_correct_objectives.items():
     st.markdown(f"### {category}")
     key = f"dropdown_{category}"
 
-    # Feedback appears BEFORE dropdown
-    for msg in st.session_state.dropdown_feedback[category]:
-        if msg["type"] == "success":
-            st.success(msg["text"])
-        elif msg["type"] == "warning":
-            st.warning(msg["text"])
-        elif msg["type"] == "error":
-            st.error(msg["text"])
-
     selected = st.multiselect(
         f"Select objectives for {category}:",
         options=st.session_state.dropdown_objectives_pool,
-        default=st.session_state.dropdown_selections[category],
         key=key
     )
 
-    # Only update state if changed
-    if selected != st.session_state.dropdown_selections[category]:
-        st.session_state.dropdown_selections[category] = selected
-        new_feedback = []
-        for obj in selected:
-            if obj in valid_items:
-                new_feedback.append({"type": "success", "text": f"{obj} ✔️ Correct"})
-            elif obj in correct_objectives:
-                new_feedback.append({"type": "warning", "text": f"{obj} ⚠️ Valid but belongs to another category"})
-            else:
-                new_feedback.append({"type": "error", "text": f"{obj} ❌ Not a valid linear equation objective"})
-        st.session_state.dropdown_feedback[category] = new_feedback
+    # Always sync back to your manual tracking dict
+    st.session_state.dropdown_selections[category] = st.session_state.get(key, [])
 
-# ✅ Final "I'm Done" button
-st.markdown("---")
-if st.button("✅ I'm Done"):
-    st.success("🎉 Great job categorizing objectives! Let's move to the next step.")
-    st.session_state.show_next_section = True
+    # 🧠 Feedback line-by-line
+    for obj in selected:
+        if obj in valid_items:
+            st.success(f"✅ {obj} is correct for this category.")
+        elif obj in correct_objectives:
+            st.warning(f"⚠️ {obj} is valid but belongs to a different category.")
+        else:
+            st.error(f"❌ {obj} is not a valid objective for linear equations.")
 
 st.caption("Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
