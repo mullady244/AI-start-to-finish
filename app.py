@@ -3,9 +3,9 @@ import streamlit as st
 import random
 from datetime import datetime
 
-st.set_page_config(page_title="Algebra Map – Version: Test 48", layout="centered")
+st.set_page_config(page_title="Algebra Map – Version: Test 49", layout="centered")
 
-st.title("Algebra Map – Version: Test 48")
+st.title("Algebra Map – Version: Test 49")
 
 st.markdown("This is a conceptual exploration, not a solving practice space. Here we explain how to solve, not solve it for you.")
 st.markdown("💡 This app guides you through the conceptual structure of Algebra. Solving is for your notebook. Mastery is for your mind.")
@@ -93,18 +93,15 @@ if "dropdown_selections" not in st.session_state:
 for category, valid_items in grouped_correct_objectives.items():
     st.markdown(f"### {category}")
     key = f"dropdown_{category}"
-    previous_selection = st.session_state.dropdown_selections.get(category, [])
 
     selected = st.multiselect(
         f"Select objectives for {category}:",
         options=st.session_state.dropdown_objectives_pool,
-        default=previous_selection,
         key=key
     )
 
-    # NONSTICK FIX: Only update session state if changed
-    if selected != previous_selection:
-        st.session_state.dropdown_selections[category] = selected
+    # Always sync back to your manual tracking dict
+    st.session_state.dropdown_selections[category] = st.session_state.get(key, [])
 
     # 🧠 Feedback line-by-line
     for obj in selected:
